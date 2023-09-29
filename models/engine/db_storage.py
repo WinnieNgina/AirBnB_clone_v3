@@ -50,7 +50,6 @@ class DBStorage:
                     key = obj.__class__.__name__ + '.' + obj.id
                     new_dict[key] = obj
         return (new_dict)
-    
 
     def get(self, cls, id):
         '''Returns an object whose id is provided'''
@@ -72,7 +71,7 @@ class DBStorage:
             objects = self.all()
             length = len(objects)
             return length
-        
+
     def new(self, obj):
         """add the object to the current database session"""
         self.__session.add(obj)

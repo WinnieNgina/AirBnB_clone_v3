@@ -33,7 +33,7 @@ class FileStorage:
                     new_dict[key] = value
             return new_dict
         return self.__objects
-    
+
     def get(self, cls, id):
         '''Returns an object whose id is provided'''
         objs_dict = self.all(cls)
@@ -54,7 +54,7 @@ class FileStorage:
             objects = self.all()
             length = len(objects)
             return length
-        
+
     def new(self, obj):
         """sets in __objects the obj with key <obj class name>.id"""
         if obj is not None:
