@@ -45,14 +45,14 @@ def create_state():
         # if data is in json format, it return python dict or list
         # If the data is not valid JSON, raise an error or return None
         if 'name' not in data:
-            abort(400, description='Missing name')
+            abort(400, 'Missing name')
         new_state = State(**data)
         # Create a new instance of state and pass the key value pairs
         storage.new(new_state)
         storage.save()
         return jsonify(new_state.to_dict()), 201
     else:
-        abort(400, description="Not a JSON")
+        abort(400, 'Not a JSON')
 
 
 @app_views.route('/states/<state_id>', methods=['PUT'])
@@ -63,7 +63,7 @@ def update_state(state_id):
         abort(404)
     data = request.get_json()
     if data is None:
-        abort(400, description="Not a JSON")
+        abort(400, 'Not a JSON')
     else:
         for key, value in data.items():
             if key not in ['id', 'created_at', 'updated_at']:

@@ -56,7 +56,7 @@ def create_city(state_id):
         storage.save()
         return jsonify(new_city.to_dict()), 201
     else:
-        abort(400, description="Not a JSON")
+        abort(400, 'Not a JSON')
 
 
 @app_views.route('/cities/<city_id>', methods=['PUT'])
@@ -67,7 +67,7 @@ def update_city(city_id):
         abort(404)
     data = request.get_json()
     if data is None:
-        abort(400, description="Not a JSON")
+        abort(400, 'Not a JSON')
     for key, value in data.items():
         if key not in ['id', 'created_at', 'updated_at']:
             setattr(object, key, value)
