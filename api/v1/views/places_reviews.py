@@ -41,7 +41,8 @@ def delete_review(review_id):
         return jsonify({}), 200
 
 
-@app_views.route('/places/<place_id>/reviews', methods=['POST'], strict_slashes=False)
+@app_views.route('/places/<place_id>/reviews', methods=['POST'],
+                 strict_slashes=False)
 def create_review(place_id):
     '''Create a new state'''
     content_type = request.headers.get('Content-Type')
