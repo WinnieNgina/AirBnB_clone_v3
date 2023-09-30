@@ -6,14 +6,14 @@ from models import storage
 from models.state import State
 
 
-@app_views.route('/states', methods=['GET'])
+@app_views.route('/states', methods=['GET'], strict_slashes=False)
 def all_states():
     '''Return all the states in the storage'''
     state_object = storage.all(State)
     return jsonify([object.to_dict() for object in state_object.values()])
 
 
-@app_views.route('/states/<state_id>', methods=['GET'])
+@app_views.route('/states/<state_id>', methods=['GET'], strict_slashes=False)
 def search_by_id(state_id):
     '''Filter state by id'''
     object = storage.get(State, state_id)
@@ -22,7 +22,8 @@ def search_by_id(state_id):
     return jsonify(object.to_dict())
 
 
-@app_views.route('/states/<state_id>', methods=['DELETE'])
+@app_views.route('/states/<state_id>', methods=['DELETE'],
+                 strict_slashes=False)
 def delete_obj(state_id):
     '''Delete state of the provided id'''
     object = storage.get(State, state_id)
@@ -35,7 +36,7 @@ def delete_obj(state_id):
         return jsonify({}), 200
 
 
-@app_views.route('/states', methods=['POST'])
+@app_views.route('/states', methods=['POST'], strict_slashes=False)
 def create_state():
     '''Create a new state'''
     content_type = request.headers.get('Content-Type')
@@ -55,7 +56,7 @@ def create_state():
         abort(400, 'Not a JSON')
 
 
-@app_views.route('/states/<state_id>', methods=['PUT'])
+@app_views.route('/states/<state_id>', methods=['PUT'], strict_slashes=False)
 def update_state(state_id):
     '''Update state of provided id'''
     object = storage.get(State, state_id)
