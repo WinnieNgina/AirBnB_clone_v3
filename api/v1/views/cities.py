@@ -53,7 +53,7 @@ def create_city(state_id):
             abort(400, 'Missing name')
         new_city = City(**data)
         # Create a new instance of state and pass the key value pairs
-        new_city.state_id = state_id
+        setattr(new_city, 'state_id', state_id)
         storage.new(new_city)
         storage.save()
         return jsonify(new_city.to_dict()), 201
