@@ -41,8 +41,7 @@ def delete_review(review_id):
         return jsonify({}), 200
 
 
-@app_views.route('/places/<place_id>/reviews', methods=['POST'],
-                 strict_slashes=False)
+@app_views.route('/places/<place_id>/reviews', methods=['POST'], strict_slashes=False)
 def create_review(place_id):
     '''Create a new state'''
     content_type = request.headers.get('Content-Type')
@@ -52,6 +51,8 @@ def create_review(place_id):
         # if data is in json format, it return python dict or list
         # If the data is not valid JSON, raise an error or return None
         place_rev = storage.get(Place, data["place_id"])
+        if place_rev is None:
+            abort(404)
         if 'user_id' not in data:
             abort(400, 'Missing user_id')
         user_place = storage.get(User, data["user_id"])
