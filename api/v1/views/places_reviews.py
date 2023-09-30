@@ -46,13 +46,13 @@ def create_review(place_id):
     '''Create a new state'''
     content_type = request.headers.get('Content-Type')
     if (content_type == 'application/json'):
-        data = request.get_json()
         # method extracts and parses data from request body
         # if data is in json format, it return python dict or list
         # If the data is not valid JSON, raise an error or return None
-        place_rev = storage.get(Place, data["place_id"])
+        place_rev = storage.get(Place, place_id)
         if place_rev is None:
             abort(404)
+        data = request.get_json()
         if 'user_id' not in data:
             abort(400, 'Missing user_id')
         user_place = storage.get(User, data["user_id"])
