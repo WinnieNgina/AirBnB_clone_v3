@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-'''state view'''
+'''city view'''
 from flask import Flask, jsonify, abort, request
 from api.v1.views import app_views
 from models import storage
@@ -7,26 +7,16 @@ from models.city import City
 from models.state import State
 
 
-@app_views.route('/cities', methods=['GET'])
-def all_states():
-    '''Return all the states in the storage'''
-    instances = storage.all(City)
-    cities_list = []
-    for instance in instances.values():
-        cities_list.append(instance.to_dict())
-    return jsonify(cities_list)
-
-
 @app_views.route('/states/<state_id>/cities', methods=['GET'])
-def search_by_id(state_id):
+def search_cities_by_id(state_id):
     '''Filter cities in state by id'''
     object = storage.get(State, state_id)
     if object is None:
         abort(404)
     return jsonify([city.to_dict() for city in object.cities])
 
-@app_views.route('/cities/<city_id>', methods=['GET'])
 
+@app_views.route('/cities/<city_id>', methods=['GET'])
 def search_city_by_id(city_id):
     '''Filter city by id'''
     object = storage.get(City, city_id)
@@ -36,7 +26,7 @@ def search_city_by_id(city_id):
 
 
 @app_views.route('/cities/<city_id>', methods=['DELETE'])
-def delete_obj(city_id):
+def delete_city_obj(city_id):
     '''Delete city of the provided id'''
     object = storage.get(City, city_id)
     if object is None:
@@ -62,11 +52,12 @@ def create_city(state_id):
         new_city = City(**data)
         # Create a new instance of state and pass the key value pairs
         new_city.state_id = state_id
-        storage.new(new_city])
+        storage.new(new_city)
         storage.save()
         return jsonify(new_city.to_dict()), 201
     else:
         abort(400, description="Not a JSON")
+
 
 @app_views.route('/cities/<city_id>', methods=['PUT'])
 def update_city(city_id):
@@ -80,5 +71,5 @@ def update_city(city_id):
     for key, value in data.items():
         if key not in ['id', 'created_at', 'updated_at']:
             setattr(object, key, value)
-        storage.save()
-        return jsonify(object.to_dict()), 200
+    storage.save()
+    return jsonify(object.to_dict()), 200
