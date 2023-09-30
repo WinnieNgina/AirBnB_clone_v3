@@ -3,8 +3,10 @@
 from flask import Flask, jsonify, abort, request
 from api.v1.views import app_views
 from models import storage
+from models.city import City
 from models.place import Place
 from models.user import User
+
 
 
 @app_views.route('/cities/<city_id>/places', methods=['GET'],
@@ -17,7 +19,7 @@ def search_places_by_city_id(city_id):
     return jsonify([place.to_dict() for place in object.places])
 
 
-@app_views.route('places/<place_id>', methods=['GET'], strict_slashes=False)
+@app_views.route('/places/<place_id>', methods=['GET'], strict_slashes=False)
 def search_place(place_id):
     '''Filter city by id'''
     object = storage.get(Place, place_id)
@@ -26,7 +28,7 @@ def search_place(place_id):
     return jsonify(object.to_dict())
 
 
-@app_views.route('places/<place_id>', methods=['DELETE'], strict_slashes=False)
+@app_views.route('/places/<place_id>', methods=['DELETE'], strict_slashes=False)
 def delete_place(place_id):
     '''Delete city of the provided id'''
     object = storage.get(Place, place_id)
