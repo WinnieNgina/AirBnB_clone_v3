@@ -3,30 +3,39 @@
 from flask import Flask, jsonify, abort, request
 from api.v1.views import app_views
 from models import storage
-from models.state import State
+from models.city import cities
 
 
-@app_views.route('/states', methods=['GET'])
+@app_views.route('/cities', methods=['GET'])
 def all_states():
     '''Return all the states in the storage'''
-    instances = storage.all(State)
-    states_list = []
+    instances = storage.all(City)
+    cities_list = []
     for instance in instances.values():
-        states_list.append(instance.to_dict())
-    return jsonify(states_list)
+        cities_list.append(instance.to_dict())
+    return jsonify(cities_list)
 
 
-@app_views.route('/states/<state_id>', methods=['GET'])
+@app_views.route('/states/<state_id>/cities', methods=['GET'])
 def search_by_id(state_id):
     '''Filter state by id'''
     object = storage.get(State, state_id)
     if object is None:
         abort(404)
-    return jsonify(object.to_dict())
+    return jsonify(object.cities.to_dict())
+
+
+@app_views.route('cities/<city_id>', methods=['GET'])
+def search_by_id(state_id):
+    '''Filter state by id'''
+    object = storage.get(State, state_id)
+    if object is None:
+        abort(404)
+    return jsonify(object.to_dict())5
 
 
 @app_views.route('/states/<state_id>', methods=['DELETE'])
-def delete_obj(state_id):
+def delete_obj(state_id=None):
     '''Delete state of the provided id'''
     object = storage.get(State, state_id)
     if object is None:
@@ -59,7 +68,7 @@ def create_state():
 
 
 @app_views.route('/states/<state_id>', methods=['PUT'])
-def update_state(state_id):
+def update_state(state_id=None):
     '''Update state of provided id'''
     object = storage.get(State, state_id)
     if object is None:
