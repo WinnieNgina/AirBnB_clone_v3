@@ -46,8 +46,10 @@ def create_user():
         # method extracts and parses data from request body
         # if data is in json format, it return python dict or list
         # If the data is not valid JSON, raise an error or return None
-        if 'name' not in data:
-            abort(400, 'Missing name')
+        if 'email' not in data:
+            abort(400, 'Missing email')
+        if 'password' not in data:
+            abort(400, 'Missing password')
         new_user = User(**data)
         # Create a new instance of state and pass the key value pairs
         storage.new(new_user)
@@ -69,7 +71,7 @@ def update_user(user_id):
         abort(400, 'Not a JSON')
     else:
         for key, value in data.items():
-            if key not in ['id', 'created_at', 'updated_at']:
+            if key not in ['id', 'email', 'created_at', 'updated_at']:
                 setattr(object, key, value)
         storage.save()
         return jsonify(object.to_dict()), 200
