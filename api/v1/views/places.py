@@ -47,6 +47,9 @@ def create_place(city_id):
     '''Create a new state'''
     content_type = request.headers.get('Content-Type')
     if (content_type == 'application/json'):
+        city_rev = storage.get(City, city_id)
+        if city_rev is None:
+            abort(404)
         data = request.get_json()
         # method extracts and parses data from request body
         # if data is in json format, it return python dict or list
